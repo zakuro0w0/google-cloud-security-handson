@@ -25,9 +25,18 @@ resource "google_service_account" "service_account" {
 # }
 
 # memberに指定したプリンシパルに特定のデータセットに限定したroleを与える
-resource "google_bigquery_dataset_iam_member" "dataset_A_access" {
+# resource "google_bigquery_dataset_iam_member" "dataset_A_access" {
+#   project = data.google_project.current.project_id
+#   dataset_id = google_bigquery_dataset.dataset_A.dataset_id
+#   role = "roles/bigquery.dataViewer"
+#   member = "serviceAccount:${google_service_account.service_account.email}"
+# }
+
+# memberに指定したプリンシパルに特定のテーブルに限定したroleを与える
+resource "google_bigquery_table_iam_member" "dataset_A_table_A_access" {
   project = data.google_project.current.project_id
   dataset_id = google_bigquery_dataset.dataset_A.dataset_id
+  table_id = google_bigquery_table.table_A.table_id
   role = "roles/bigquery.dataViewer"
   member = "serviceAccount:${google_service_account.service_account.email}"
 }
