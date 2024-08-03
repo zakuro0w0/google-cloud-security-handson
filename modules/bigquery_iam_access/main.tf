@@ -6,15 +6,30 @@ resource "google_bigquery_dataset" "dataset_A" {
     dataset_id = "dataset_A"
 }
 
+resource "google_bigquery_dataset" "dataset_B" {
+    project = data.google_project.current.project_id
+    location = "asia-northeast1"
+    dataset_id = "dataset_B"
+}
+
 resource "google_service_account" "service_account" {
   account_id   = "bigquery-iam-access"
   display_name = "BigQuery Service Account"
 }
 
-resource "google_project_iam_member" "bigquery_role" {
+# memberに指定したプリンシパルにプロジェクト全体で有効なroleを与える
+# resource "google_project_iam_member" "bigquery_role" {
+#   project = data.google_project.current.project_id
+#   role    = "roles/bigquery.dataViewer"
+#   member  = "serviceAccount:${google_service_account.service_account.email}"
+# }
+
+# memberに指定したプリンシパルに特定のデータセットに限定したroleを与える
+resource "google_bigquery_dataset_iam_member" "dataset_A_access" {
   project = data.google_project.current.project_id
-  role    = "roles/bigquery.dataViewer"
-  member  = "serviceAccount:${google_service_account.service_account.email}"
+  dataset_id = google_bigquery_dataset.dataset_A.dataset_id
+  role = "roles/bigquery.dataViewer"
+  member = "serviceAccount:${google_service_account.service_account.email}"
 }
 
 resource "google_bigquery_table" "table_A" {
