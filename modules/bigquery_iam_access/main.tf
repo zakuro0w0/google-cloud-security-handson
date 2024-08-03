@@ -49,6 +49,11 @@ resource "google_bigquery_table" "table_A" {
   schema = <<EOF
 [
   {
+    "name": "id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
     "name": "fieldname",
     "type": "STRING",
     "mode": "REQUIRED"
