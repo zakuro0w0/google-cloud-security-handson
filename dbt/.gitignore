@@ -8,3 +8,7 @@ wheels/
 
 # venv
 .venv
+
+.user.yml
+logs/
+target/

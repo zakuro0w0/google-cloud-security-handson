@@ -7,6 +7,7 @@ authors = [
 ]
 dependencies = [
     "dbt-core>=1.8.4",
+    "dbt-bigquery>=1.8.2",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"

@@ -1,0 +1,11 @@
+dbt-profile:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: 'gc-security-handson'
+      dataset: 'dataset_A'
+      threads: 1
+      timeout_seconds: 300
+      location: 'asia-northeast1'

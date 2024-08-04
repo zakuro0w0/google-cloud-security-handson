@@ -1,0 +1,5 @@
+name: 'gcSecurityHandson'
+version: '1.0.0'
+profile: 'dbt-profile'
+macro-paths: ["macros"]
+model-paths: ["models"]
