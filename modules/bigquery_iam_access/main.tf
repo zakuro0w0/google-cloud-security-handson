@@ -70,7 +70,12 @@ resource "google_bigquery_table" "table_B" {
   schema = <<EOF
 [
   {
-    "name": "fieldname",
+    "name": "id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "name": "password",
     "type": "STRING",
     "mode": "REQUIRED"
   }
