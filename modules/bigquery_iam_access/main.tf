@@ -105,3 +105,35 @@ resource "google_data_catalog_policy_tag" "child_policy_tag" {
   description       = "子どものポリシータグです"
   parent_policy_tag = google_data_catalog_policy_tag.parent_policy_tag.name
 }
+
+# BigQuery Data Policyのサンプルコード
+# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_datapolicy_data_policy#example-usage---bigquery-datapolicy-data-policy-routine
+# data_masking_policyにBQリモート関数を指定し、関数の実装で機密データをマスキングすると思われる
+# google cloudプロジェクト自体が組織に参加していないとこのリソースは作成できない模様(以下のエラーが出てしまう)
+# Error creating DataPolicy: googleapi: Error 400: The project **** needs to belong to an organization to manage DataPolicies.
+# 
+# resource "google_bigquery_datapolicy_data_policy" "data_masking_policy" {
+#   location         = "asia-northeast1"
+#   data_policy_id   = "data_masking_policy"
+#   policy_tag       = google_data_catalog_policy_tag.child_policy_tag.name
+#   data_policy_type = "DATA_MASKING_POLICY"  
+#   data_masking_policy {
+#     routine = google_bigquery_routine.custom_masking_routine.id
+#   }
+# }
+
+# passwordデータを"X"でマスキングするBQリモート関数
+# resource "google_bigquery_routine" "custom_masking_routine" {
+#     dataset_id           = google_bigquery_dataset.dataset_A.dataset_id
+#     routine_id           = "custom_masking_routine"
+#     routine_type         = "SCALAR_FUNCTION"
+#     language             = "SQL"
+#     data_governance_type = "DATA_MASKING"
+#     definition_body      = "SAFE.REGEXP_REPLACE(password, '[0-9]', 'X')"
+#     return_type          = "{\"typeKind\" :  \"STRING\"}"
+
+#     arguments {
+#       name = "password"
+#       data_type = "{\"typeKind\" :  \"STRING\"}"
+#     } 
+# }
