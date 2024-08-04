@@ -77,3 +77,26 @@ resource "google_bigquery_table" "table_B" {
 ]
 EOF
 }
+
+resource "google_data_catalog_taxonomy" "basic_taxonomy" {
+  region       = "asia-northeast1"
+  display_name = "basic_taxonomy"
+  description  = "A collection of policy tags"
+
+  # 管理者であっても権限付与を明示的に行なわないと見れなくなる
+  # SELECT *している場合は権限がなくなるので注意が必要
+  activated_policy_types = ["FINE_GRAINED_ACCESS_CONTROL"]
+}
+
+resource "google_data_catalog_policy_tag" "parent_policy_tag" {
+  taxonomy     = google_data_catalog_taxonomy.basic_taxonomy.id
+  display_name = "親のポリシータグ"
+  description  = "親のポリシータグです"
+}
+
+resource "google_data_catalog_policy_tag" "child_policy_tag" {
+  taxonomy          = google_data_catalog_taxonomy.basic_taxonomy.id
+  display_name      = "子どものポリシータグ"
+  description       = "子どものポリシータグです"
+  parent_policy_tag = google_data_catalog_policy_tag.parent_policy_tag.name
+}

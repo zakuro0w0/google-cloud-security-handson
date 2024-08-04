@@ -6,6 +6,7 @@ provider "google" {
 resource "google_project_service" "service" {
     for_each = toset([
         "bigquery.googleapis.com",
+        "datacatalog.googleapis.com",
     ])
     service = each.value
 }
